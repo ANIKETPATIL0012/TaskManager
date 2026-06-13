@@ -105,7 +105,7 @@ export default function Tasks() {
   const currentTasks = filteredTasks.slice(indexOfFirst, indexOfLast);
 
   const totalPages = Math.ceil(filteredTasks.length / tasksPerPage);
-  const pagesPerGroup = 10;
+  const pagesPerGroup = 7;
 
   const startPage =
     Math.floor((currentPage - 1) / pagesPerGroup) * pagesPerGroup + 1;
@@ -121,8 +121,6 @@ export default function Tasks() {
 
         <div className="flex-1 bg-gray-100 min-h-screen p-4 md:p-6">
           <h1 className="text-2xl md:text-3xl font-bold mb-5">Tasks</h1>
-
-          {/* Search & Filter */}
 
           <div className="bg-white p-4 rounded-xl shadow mb-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -145,8 +143,6 @@ export default function Tasks() {
               </select>
             </div>
           </div>
-
-          {/* Edit Task */}
 
           {editTask && (
             <div className="bg-yellow-100 p-4 rounded-xl mb-5">

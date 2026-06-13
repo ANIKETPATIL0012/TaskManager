@@ -42,49 +42,58 @@ export default function AddTask() {
     <div>
       <Navbar />
 
-      <div className="flex bg-gray-100 min-h-screen">
+      <div className="flex flex-col md:flex-row bg-gray-100 min-h-screen">
         <Sidebar />
-        <div className="p-6">
-          <div className="bg-white p-6 rounded shadow max-w-3xl">
-            <h1 className="text-2xl font-bold mb-5">Add New Task</h1>
 
-            <form onSubmit={handleSubmit}>
+        <div className="flex-1 p-4 md:p-6 flex justify-center">
+          <div className="bg-white p-5 md:p-8 rounded-xl shadow-lg w-full max-w-3xl">
+            <h1 className="text-2xl md:text-3xl font-bold mb-6">
+              Add New Task
+            </h1>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 name="title"
                 type="text"
-                placeholder="Title"
-                className="border p-2 w-full mb-4 rounded"
+                placeholder="Task Title"
+                className="border p-3 w-full rounded-lg"
                 onChange={handleChange}
                 required
               />
 
               <textarea
                 name="description"
-                placeholder="Description"
-                className="border p-2 w-full mb-4 rounded"
+                placeholder="Task Description"
+                rows="4"
+                className="border p-3 w-full rounded-lg"
                 onChange={handleChange}
                 required
               />
 
               <select
                 name="priority"
-                className="border p-2 w-full mb-4 rounded"
+                className="border p-3 w-full rounded-lg"
                 onChange={handleChange}
               >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
+                <option value="Low">Low Priority</option>
+
+                <option value="Medium">Medium Priority</option>
+
+                <option value="High">High Priority</option>
               </select>
 
               <input
                 name="dueDate"
                 type="date"
-                className="border p-2 w-full mb-4 rounded"
+                className="border p-3 w-full rounded-lg"
                 onChange={handleChange}
                 required
               />
 
-              <button className="bg-blue-500 text-white px-5 py-2 rounded">
+              <button
+                type="submit"
+                className="w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg"
+              >
                 Add Task
               </button>
             </form>

@@ -24,7 +24,7 @@ export default function Tasks() {
       const res = await fetch("https://jsonplaceholder.typicode.com/todos");
       const apiData = await res.json();
 
-      const apiTasks = apiData.slice(0, 15).map((t) => ({
+      const apiTasks = apiData.map((t) => ({
         id: t.id,
         title: t.title,
         description: "API Task",
@@ -99,143 +99,160 @@ export default function Tasks() {
 
   const totalPages = Math.ceil(filteredTasks.length / tasksPerPage);
 
+  const pagesPerGroup = 10;
+
+  const startPage =
+    Math.floor((currentPage - 1) / pagesPerGroup) * pagesPerGroup + 1;
+
+  const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
+
   return (
-    <div className="flex">
-      <Sidebar />
+    <div>
+      <Navbar />
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1 bg-gray-100 min-h-screen">
+          <div className="p-6">
+            <h1 className="text-3xl font-bold mb-5">Tasks Page</h1>
 
-      <div className="flex-1 bg-gray-100 min-h-screen">
-        <Navbar />
+            <div className="bg-white p-4 rounded shadow mb-5">
+              <div className="grid md:grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  placeholder="Search Task..."
+                  className="border p-2 rounded"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
 
-        <div className="p-6">
-          <h1 className="text-3xl font-bold mb-5">
-            Tasks Page 
-          </h1>
-
-          <div className="bg-white p-4 rounded shadow mb-5">
-            <div className="grid md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Search Task..."
-                className="border p-2 rounded"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-
-              <select
-                className="border p-2 rounded"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option>All</option>
-                <option>Pending</option>
-                <option>Completed</option>
-              </select>
+                <select
+                  className="border p-2 rounded"
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                >
+                  <option>All</option>
+                  <option>Pending</option>
+                  <option>Completed</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          {editTask && (
-            <div className="bg-yellow-100 p-4 mb-5 rounded">
-              <h2 className="font-bold mb-2">Edit Task</h2>
+            {editTask && (
+              <div className="bg-yellow-100 p-4 mb-5 rounded">
+                <h2 className="font-bold mb-2">Edit Task</h2>
 
-              <input
-                className="border p-2 w-full mb-2"
-                value={editTask.title}
-                onChange={(e) =>
-                  setEditTask({
-                    ...editTask,
-                    title: e.target.value,
-                  })
-                }
-              />
+                <input
+                  className="border p-2 w-full mb-2"
+                  value={editTask.title}
+                  onChange={(e) =>
+                    setEditTask({
+                      ...editTask,
+                      title: e.target.value,
+                    })
+                  }
+                />
 
-              <button
-                onClick={saveEdit}
-                className="bg-blue-500 text-white px-3 py-1 rounded"
-              >
-                Save
-              </button>
+                <button
+                  onClick={saveEdit}
+                  className="bg-blue-500 text-white px-3 py-1 rounded"
+                >
+                  Save
+                </button>
 
-              <button
-                onClick={() => setEditTask(null)}
-                className="ml-2 bg-gray-400 text-white px-3 py-1 rounded"
-              >
-                Cancel
-              </button>
-            </div>
-          )}
+                <button
+                  onClick={() => setEditTask(null)}
+                  className="ml-2 bg-gray-400 text-white px-3 py-1 rounded"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
 
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            <div className="grid md:grid-cols-2 gap-5">
-              {currentTasks.map((task) => (
-                <div key={task.id} className="bg-white p-5 rounded shadow">
-                  <h2 className="text-xl font-bold">{task.title}</h2>
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-5">
+                {currentTasks.map((task) => (
+                  <div key={task.id} className="bg-white p-5 rounded shadow">
+                    <h2 className="text-xl font-bold">{task.title}</h2>
 
-                  <p>Status: {task.status}</p>
-                  <p>Priority: {task.priority}</p>
+                    <p>Status: {task.status}</p>
+                    <p>Priority: {task.priority}</p>
 
-                  <p className="text-sm text-gray-500">Type: {task.type}</p>
+                    <p className="text-sm text-gray-500">Type: {task.type}</p>
 
-                  <div className="flex gap-2 mt-4">
-                    {task.status !== "Completed" && (
+                    <div className="flex gap-2 mt-4">
+                      {task.status !== "Completed" && (
+                        <button
+                          onClick={() => completeTask(task.id)}
+                          className="bg-green-500 text-white px-3 py-1 rounded"
+                        >
+                          Complete
+                        </button>
+                      )}
+
+                      {task.type === "local" && (
+                        <button
+                          onClick={() => startEdit(task)}
+                          className="bg-blue-500 text-white px-3 py-1 rounded"
+                        >
+                          Edit
+                        </button>
+                      )}
+
                       <button
-                        onClick={() => completeTask(task.id)}
-                        className="bg-green-500 text-white px-3 py-1 rounded"
+                        onClick={() => deleteTask(task.id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded"
                       >
-                        Complete
+                        Delete
                       </button>
-                    )}
-
-                    {task.type === "local" && (
-                      <button
-                        onClick={() => startEdit(task)}
-                        className="bg-blue-500 text-white px-3 py-1 rounded"
-                      >
-                        Edit
-                      </button>
-                    )}
-
-                    <button
-                      onClick={() => deleteTask(task.id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded"
-                    >
-                      Delete
-                    </button>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+              </div>
+            )}
 
-          <div className="flex justify-center mt-6 gap-2">
-            <button
-              className="px-3 py-1 bg-gray-300 rounded"
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-            >
-              Prev
-            </button>
-
-            {Array.from({ length: totalPages }, (_, i) => (
+            <div className="flex justify-center gap-2 mt-6">
               <button
-                key={i}
-                onClick={() => setCurrentPage(i + 1)}
-                className={`px-3 py-1 rounded ${
-                  currentPage === i + 1
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200"
-                }`}
+                className="px-3 py-1 bg-gray-300 rounded"
+                disabled={startPage === 1}
+                onClick={() =>
+                  setCurrentPage(Math.max(startPage - pagesPerGroup, 1))
+                }
               >
-                {i + 1}
+                Prev
               </button>
-            ))}
 
-            <button
-              className="px-3 py-1 bg-gray-300 rounded"
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-            >
-              Next
-            </button>
+              {Array.from({ length: endPage - startPage + 1 }, (_, i) => {
+                const page = startPage + i;
+
+                return (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-3 py-1 rounded ${
+                      currentPage === page
+                        ? "bg-blue-500 text-white"
+                        : "bg-gray-200"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                );
+              })}
+
+              <button
+                className="px-3 py-1 bg-gray-300 rounded"
+                disabled={endPage === totalPages}
+                onClick={() =>
+                  setCurrentPage(
+                    Math.min(startPage + pagesPerGroup, totalPages),
+                  )
+                }
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>

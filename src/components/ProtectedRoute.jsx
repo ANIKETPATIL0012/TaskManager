@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-export default function ProtectedRoute({ children }) {
+const ProtectedRoute = ({ children }) => {
   const user = localStorage.getItem("user");
 
   if (!user) {
@@ -8,4 +8,7 @@ export default function ProtectedRoute({ children }) {
   }
 
   return children;
-}
+};
+
+export default ProtectedRoute;
+

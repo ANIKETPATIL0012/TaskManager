@@ -1,3 +1,5 @@
+
+
 function SearchFilter({
   search,
   setSearch,
@@ -13,43 +15,27 @@ function SearchFilter({
         placeholder="Search By Title"
         className="border p-2 rounded"
         value={search}
-        onChange={(e) =>
-          setSearch(e.target.value)
-        }
-      />
+        onChange={(e) => setSearch(e.target.value)}/>
 
       <select
         className="border p-2 rounded"
         value={statusFilter}
-        onChange={(e) =>
-          setStatusFilter(e.target.value)
-        }
-      >
-        <option value="all">
-          All Status
-        </option>
-        <option value="completed">
-          Completed
-        </option>
-        <option value="pending">
-          Pending
-        </option>
+        onChange={(e) => setStatusFilter(e.target.value)}>
+
+        <option value="all">All Status</option>
+        <option value="completed">Completed</option>
+        <option value="pending">Pending</option>
+        
       </select>
 
       <select
         className="border p-2 rounded"
         value={priorityFilter}
-        onChange={(e) =>
-          setPriorityFilter(e.target.value)
-        }
+        onChange={(e) => setPriorityFilter(e.target.value)}
       >
-        <option value="all">
-          All Priority
-        </option>
+        <option value="all">All Priority</option>
         <option value="High">High</option>
-        <option value="Medium">
-          Medium
-        </option>
+        <option value="Medium">Medium</option>
         <option value="Low">Low</option>
       </select>
     </div>

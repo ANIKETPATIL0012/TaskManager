@@ -39,12 +39,11 @@ export default function AddTask() {
   };
 
   return (
-    <div className="flex">
-      <Sidebar />
+    <div>
+      <Navbar />
 
-      <div className="flex-1 bg-gray-100 min-h-screen">
-        <Navbar />
-
+      <div className="flex bg-gray-100 min-h-screen">
+        <Sidebar />
         <div className="p-6">
           <div className="bg-white p-6 rounded shadow max-w-3xl">
             <h1 className="text-2xl font-bold mb-5">Add New Task</h1>

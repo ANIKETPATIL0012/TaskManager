@@ -1,79 +1,102 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 
 export default function Profile() {
-  const [user, setUser] = useState({
-    name: "",
-    email: "",
-    password: "",
+  const user = JSON.parse(localStorage.getItem("currentUser"));
+
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: user?.name || "",
+    email: user?.email || "",
+    password: user?.password || "",
   });
 
-  useEffect(() => {
-    const savedUser = JSON.parse(localStorage.getItem("user")) || {
-      name: "",
-      email: "",
-      password: "",
-    };
-
-    setUser(savedUser);
-  }, []);
-
   const handleChange = (e) => {
-    setUser({
-      ...user,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
   const saveProfile = () => {
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("currentUser", JSON.stringify(formData));
 
-    alert("Profile Updated Successfully");
+    localStorage.setItem("user", JSON.stringify(formData));
+
+    alert("Profile Updated");
+    setIsEditing(false);
   };
 
   return (
-    <div className="flex">
-      <Sidebar />
+    <div>
+      <Navbar />
 
-      <div className="flex-1 bg-gray-100 min-h-screen">
-        <Navbar />
+      <div className="flex bg-gray-100 min-h-screen">
+        <Sidebar />
+        <div className=" bg-gray-100 m-6">
+          <div className="bg-white p-6 rounded-xl shadow-lg w-2xl">
+            <h1 className="text-3xl font-bold mb-6 text-center">My Profile</h1>
 
-        <div className="p-6">
-          <h1 className="text-3xl font-bold mb-5">Profile</h1>
+            <div className="space-y-4">
+              <div>
+                <label className="font-medium">Name</label>
 
-          <div className="bg-white p-6 rounded shadow max-w-xl">
-            <label>Name</label>
-            <input
-              name="name"
-              value={user.name}
-              onChange={handleChange}
-              className="border p-2 w-full mb-3"
-            />
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  disabled={!isEditing}
+                  onChange={handleChange}
+                  className="w-full border p-2 rounded mt-1"
+                />
+              </div>
 
-            <label>Email</label>
-            <input
-              name="email"
-              value={user.email}
-              onChange={handleChange}
-              className="border p-2 w-full mb-3"
-            />
+              <div>
+                <label className="font-medium">Email</label>
 
-            <label>Password</label>
-            <input
-              name="password"
-              type="password"
-              value={user.password}
-              onChange={handleChange}
-              className="border p-2 w-full mb-3"
-            />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  disabled={!isEditing}
+                  onChange={handleChange}
+                  className="w-full border p-2 rounded mt-1"
+                />
+              </div>
 
-            <button
-              onClick={saveProfile}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Save Changes
-            </button>
+              <div>
+                <label className="font-medium">Password</label>
+
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  disabled={!isEditing}
+                  onChange={handleChange}
+                  className="w-full border p-2 rounded mt-1"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-3 mt-6">
+              {!isEditing ? (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="flex-1 bg-blue-500 text-white py-2 rounded"
+                >
+                  Edit Profile
+                </button>
+              ) : (
+                <button
+                  onClick={saveProfile}
+                  className="flex-1 bg-green-500 text-white py-2 rounded"
+                >
+                  Save Changes
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

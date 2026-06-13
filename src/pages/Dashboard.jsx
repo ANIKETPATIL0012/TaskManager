@@ -1,9 +1,9 @@
+import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import API from "../services/api";
-import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 
-export default function Dashboard() {
+const Dashboard = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
@@ -13,16 +13,14 @@ export default function Dashboard() {
   const fetchTasks = async () => {
     try {
       const res = await API.get("/todos");
-
-      const apiTasks = res.data.slice(0, 6).map((t) => ({
+      const apiTasks = res.data.map((t) => ({
         id: t.id,
         title: t.title,
         status: t.completed ? "Completed" : "Pending",
         source: "api",
       }));
 
-      const localTasks =
-        JSON.parse(localStorage.getItem("tasks")) || [];
+      const localTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
       setTasks([...localTasks, ...apiTasks]);
     } catch (err) {
@@ -32,13 +30,9 @@ export default function Dashboard() {
 
   const total = tasks.length;
 
-  const completed = tasks.filter(
-    (task) => task.status === "Completed"
-  ).length;
+  const completed = tasks.filter((task) => task.status === "Completed").length;
 
-  const pending = tasks.filter(
-    (task) => task.status === "Pending"
-  ).length;
+  const pending = tasks.filter((task) => task.status === "Pending").length;
 
   return (
     <>
@@ -48,9 +42,7 @@ export default function Dashboard() {
         <Sidebar />
 
         <div className="flex-1 p-6">
-          <h1 className="text-3xl font-bold mb-5">
-            Dashboard
-          </h1>
+          <h1 className="text-3xl font-bold mb-5">Dashboard</h1>
 
           <div className="grid md:grid-cols-3 gap-5">
             <div className="bg-blue-500 text-white p-6 rounded shadow">
@@ -72,4 +64,6 @@ export default function Dashboard() {
       </div>
     </>
   );
-}
+};
+
+export default Dashboard;

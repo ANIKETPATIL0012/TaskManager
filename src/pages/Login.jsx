@@ -10,18 +10,16 @@ export default function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const user = JSON.parse(localStorage.getItem("currentUser"));
+    const users = JSON.parse(localStorage.getItem("users")) || [];
 
-    if (!user) {
-      alert("Please Signup First");
-      return;
-    }
+    const user = users.find(
+      (u) =>
+        u.email.trim().toLowerCase() === email.trim().toLowerCase() &&
+        u.password === password,
+    );
 
-    if (email === user.email && password === user.password) {
-      localStorage.setItem("isLoggedIn", "true");
-
-      localStorage.setItem("user", JSON.stringify(user));
-
+    if (user) {
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
       navigate("/dashboard");
     } else {
       alert("Invalid Email or Password");

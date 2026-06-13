@@ -25,23 +25,27 @@ export default function Profile() {
 
     localStorage.setItem("user", JSON.stringify(formData));
 
-    alert("Profile Updated");
+    alert("Profile Updated Successfully");
+
     setIsEditing(false);
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
 
-      <div className="flex bg-gray-100 min-h-screen">
+      <div className="flex flex-col md:flex-row">
         <Sidebar />
-        <div className=" bg-gray-100 m-6">
-          <div className="bg-white p-6 rounded-xl shadow-lg w-2xl">
-            <h1 className="text-3xl font-bold mb-6 text-center">My Profile</h1>
 
-            <div className="space-y-4">
+        <div className="flex-1 p-4 md:p-6 lg:p-8 flex justify-center">
+          <div className="bg-white rounded-xl shadow-lg w-full max-w-3xl p-5 md:p-8">
+            <h1 className="text-2xl md:text-3xl font-bold text-center mb-6">
+              My Profile
+            </h1>
+
+            <div className="space-y-5">
               <div>
-                <label className="font-medium">Name</label>
+                <label className="block font-medium mb-2">Name</label>
 
                 <input
                   type="text"
@@ -49,12 +53,16 @@ export default function Profile() {
                   value={formData.name}
                   disabled={!isEditing}
                   onChange={handleChange}
-                  className="w-full border p-2 rounded mt-1"
+                  className={`w-full border rounded-lg p-3 outline-none ${
+                    isEditing
+                      ? "focus:ring-2 focus:ring-blue-400"
+                      : "bg-gray-100"
+                  }`}
                 />
               </div>
 
               <div>
-                <label className="font-medium">Email</label>
+                <label className="block font-medium mb-2">Email</label>
 
                 <input
                   type="email"
@@ -62,12 +70,16 @@ export default function Profile() {
                   value={formData.email}
                   disabled={!isEditing}
                   onChange={handleChange}
-                  className="w-full border p-2 rounded mt-1"
+                  className={`w-full border rounded-lg p-3 outline-none ${
+                    isEditing
+                      ? "focus:ring-2 focus:ring-blue-400"
+                      : "bg-gray-100"
+                  }`}
                 />
               </div>
 
               <div>
-                <label className="font-medium">Password</label>
+                <label className="block font-medium mb-2">Password</label>
 
                 <input
                   type="password"
@@ -75,23 +87,27 @@ export default function Profile() {
                   value={formData.password}
                   disabled={!isEditing}
                   onChange={handleChange}
-                  className="w-full border p-2 rounded mt-1"
+                  className={`w-full border rounded-lg p-3 outline-none ${
+                    isEditing
+                      ? "focus:ring-2 focus:ring-blue-400"
+                      : "bg-gray-100"
+                  }`}
                 />
               </div>
             </div>
 
-            <div className="flex gap-3 mt-6">
+            <div className="mt-8">
               {!isEditing ? (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="flex-1 bg-blue-500 text-white py-2 rounded"
+                  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg transition"
                 >
                   Edit Profile
                 </button>
               ) : (
                 <button
                   onClick={saveProfile}
-                  className="flex-1 bg-green-500 text-white py-2 rounded"
+                  className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition"
                 >
                   Save Changes
                 </button>

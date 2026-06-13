@@ -22,7 +22,6 @@ export default function Login() {
 
       localStorage.setItem("user", JSON.stringify(user));
 
-
       navigate("/dashboard");
     } else {
       alert("Invalid Email or Password");

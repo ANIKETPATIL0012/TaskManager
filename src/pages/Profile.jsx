@@ -3,31 +3,32 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 
 export default function Profile() {
-  const user = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
-  const [isEditing, setIsEditing] = useState(false);
-
-  const [formData, setFormData] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
-    password: user?.password || "",
+  const [form, setForm] = useState({
+    id: currentUser?.id,
+    name: currentUser?.name,
+    email: currentUser?.email,
+    password: currentUser?.password,
   });
 
+  const [edit, setEdit] = useState(false);
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const saveProfile = () => {
-    localStorage.setItem("currentUser", JSON.stringify(formData));
+  const save = () => {
+    let users = JSON.parse(localStorage.getItem("users")) || [];
 
-    localStorage.setItem("user", JSON.stringify(formData));
+    const updated = users.map((u) => (u.id === form.id ? form : u));
 
-    alert("Profile Updated Successfully");
+    localStorage.setItem("users", JSON.stringify(updated));
 
-    setIsEditing(false);
+    localStorage.setItem("loggedInUser", JSON.stringify(form));
+
+    alert("Profile updated");
+    setEdit(false);
   };
 
   return (
@@ -37,82 +38,67 @@ export default function Profile() {
       <div className="flex flex-col md:flex-row">
         <Sidebar />
 
-        <div className="flex-1 p-4 md:p-6 lg:p-8 flex justify-center">
-          <div className="bg-white rounded-xl shadow-lg w-full max-w-3xl p-5 md:p-8">
-            <h1 className="text-2xl md:text-3xl font-bold text-center mb-6">
+        <div className="flex-1 flex justify-center p-3 sm:p-4 md:p-8">
+          <div className="bg-white w-full max-w-2xl mb-32 rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6">
               My Profile
             </h1>
 
-            <div className="space-y-5">
-              <div>
-                <label className="block font-medium mb-2">Name</label>
-
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  disabled={!isEditing}
-                  onChange={handleChange}
-                  className={`w-full border rounded-lg p-3 outline-none ${
-                    isEditing
-                      ? "focus:ring-2 focus:ring-blue-400"
-                      : "bg-gray-100"
-                  }`}
-                />
-              </div>
-
-              <div>
-                <label className="block font-medium mb-2">Email</label>
-
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  disabled={!isEditing}
-                  onChange={handleChange}
-                  className={`w-full border rounded-lg p-3 outline-none ${
-                    isEditing
-                      ? "focus:ring-2 focus:ring-blue-400"
-                      : "bg-gray-100"
-                  }`}
-                />
-              </div>
-
-              <div>
-                <label className="block font-medium mb-2">Password</label>
-
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  disabled={!isEditing}
-                  onChange={handleChange}
-                  className={`w-full border rounded-lg p-3 outline-none ${
-                    isEditing
-                      ? "focus:ring-2 focus:ring-blue-400"
-                      : "bg-gray-100"
-                  }`}
-                />
-              </div>
+            <div className="mb-4">
+              <label className="block font-medium mb-2 text-sm sm:text-base">
+                Name
+              </label>
+              <input
+                name="name"
+                value={form.name}
+                disabled={!edit}
+                onChange={handleChange}
+                className="w-full border rounded-lg p-3 text-sm sm:text-base"
+              />
             </div>
 
-            <div className="mt-8">
-              {!isEditing ? (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg transition"
-                >
-                  Edit Profile
-                </button>
-              ) : (
-                <button
-                  onClick={saveProfile}
-                  className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition"
-                >
-                  Save Changes
-                </button>
-              )}
+            <div className="mb-4">
+              <label className="block font-medium mb-2 text-sm sm:text-base">
+                Email
+              </label>
+              <input
+                name="email"
+                value={form.email}
+                disabled={!edit}
+                onChange={handleChange}
+                className="w-full border rounded-lg p-3 text-sm sm:text-base"
+              />
             </div>
+
+            <div className="mb-6">
+              <label className="block font-medium mb-2 text-sm sm:text-base">
+                Password
+              </label>
+              <input
+                name="password"
+                type="password"
+                value={form.password}
+                disabled={!edit}
+                onChange={handleChange}
+                className="w-full border rounded-lg p-3 text-sm sm:text-base"
+              />
+            </div>
+
+            {!edit ? (
+              <button
+                onClick={() => setEdit(true)}
+                className="w-full md:w-auto bg-blue-500 text-white px-6 py-3 rounded-lg"
+              >
+                Edit
+              </button>
+            ) : (
+              <button
+                onClick={save}
+                className="w-full md:w-auto bg-green-500 text-white px-6 py-3 rounded-lg"
+              >
+                Save
+              </button>
+            )}
           </div>
         </div>
       </div>

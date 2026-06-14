@@ -46,7 +46,7 @@ export default function AddTask() {
         <Sidebar />
 
         <div className="flex-1 p-4 md:p-6 flex justify-center">
-          <div className="bg-white p-5 md:p-8 rounded-xl shadow-lg w-full max-w-3xl">
+          <div className="bg-white p-5 md:p-8 mb-32 rounded-xl shadow-lg w-full max-w-3xl">
             <h1 className="text-2xl md:text-3xl font-bold mb-6">
               Add New Task
             </h1>

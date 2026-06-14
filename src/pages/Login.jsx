@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -20,6 +20,7 @@ export default function Login() {
 
     if (user) {
       localStorage.setItem("loggedInUser", JSON.stringify(user));
+
       navigate("/dashboard");
     } else {
       alert("Invalid Email or Password");
@@ -27,41 +28,35 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center bg-gray-100">
+    <div className="h-screen flex justify-center items-center bg-gray-100 px-4">
       <form
         onSubmit={handleLogin}
-        className="bg-white p-8 rounded-xl shadow-lg w-96"
+        className="bg-white p-6 rounded-xl shadow w-full max-w-md"
       >
-        <h1 className="text-3xl font-bold text-center mb-6">Login</h1>
+        <h1 className="text-2xl font-bold mb-5 text-center">Login</h1>
 
         <input
-          type="email"
-          placeholder="Enter Email"
+          className="w-full border p-3 mb-3 rounded"
+          placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full border p-3 rounded mb-4"
-          required
         />
 
         <input
+          className="w-full border p-3 mb-4 rounded"
+          placeholder="Password"
           type="password"
-          placeholder="Enter Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-3 rounded mb-4"
-          required
         />
 
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-3 rounded hover:bg-blue-600"
-        >
+        <button className="w-full bg-blue-500 text-white p-3 rounded">
           Login
         </button>
 
-        <p className="text-center mt-4">
-          Don't have an account?
-          <Link to="/signup" className="text-blue-500 ml-1">
+        <p className="text-center mt-3">
+          No account?
+          <Link to="/signup" className="text-blue-600 ml-1">
             Signup
           </Link>
         </p>

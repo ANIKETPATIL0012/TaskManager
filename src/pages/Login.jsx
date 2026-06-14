@@ -10,22 +10,16 @@ export default function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const users =
-      JSON.parse(localStorage.getItem("users")) || [];
+    const users = JSON.parse(localStorage.getItem("users")) || [];
 
     const user = users.find(
       (u) =>
-        u.email.trim().toLowerCase() ===
-          email.trim().toLowerCase() &&
+        u.email.trim().toLowerCase() === email.trim().toLowerCase() &&
         u.password === password
     );
 
     if (user) {
-      localStorage.setItem(
-        "loggedInUser",
-        JSON.stringify(user)
-      );
-
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
       navigate("/dashboard");
     } else {
       alert("Invalid Email or Password");
@@ -33,12 +27,12 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen flex justify-center items-center bg-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <form
         onSubmit={handleLogin}
-        className="bg-white p-6 rounded-xl shadow w-full max-w-md"
+        className="bg-white w-full max-w-md p-6 rounded-xl shadow"
       >
-        <h1 className="text-2xl font-bold mb-5 text-center">
+        <h1 className="text-2xl font-bold text-center mb-5">
           Login
         </h1>
 
@@ -61,7 +55,7 @@ export default function Login() {
           Login
         </button>
 
-        <p className="text-center mt-3">
+        <p className="text-center mt-3 text-sm">
           No account?
           <Link to="/signup" className="text-blue-600 ml-1">
             Signup

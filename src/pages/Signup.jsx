@@ -26,7 +26,8 @@ export default function Signup() {
     let users = JSON.parse(localStorage.getItem("users")) || [];
 
     const exists = users.find(
-      (u) => u.email.trim().toLowerCase() === form.email.trim().toLowerCase(),
+      (u) =>
+        u.email.trim().toLowerCase() === form.email.trim().toLowerCase()
     );
 
     if (exists) {
@@ -42,11 +43,12 @@ export default function Signup() {
     };
 
     users.push(newUser);
-
     localStorage.setItem("users", JSON.stringify(users));
 
-    alert("Signup successful");
-    navigate("/");
+    // optional auto login
+    localStorage.setItem("loggedInUser", JSON.stringify(newUser));
+
+    navigate("/dashboard");
   };
 
   return (
@@ -55,7 +57,9 @@ export default function Signup() {
         onSubmit={handleSubmit}
         className="bg-white w-full max-w-md p-6 rounded-xl shadow"
       >
-        <h1 className="text-2xl font-bold text-center mb-5">Signup</h1>
+        <h1 className="text-2xl font-bold text-center mb-5">
+          Signup
+        </h1>
 
         <input
           name="name"

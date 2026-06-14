@@ -15,12 +15,12 @@ export default function Login() {
     const user = users.find(
       (u) =>
         u.email.trim().toLowerCase() === email.trim().toLowerCase() &&
-        u.password === password
+        u.password === password,
     );
 
     if (user) {
       localStorage.setItem("loggedInUser", JSON.stringify(user));
-      navigate("/dashboard");
+      navigate("/dashboard"); // ✅ OPEN DASHBOARD
     } else {
       alert("Invalid Email or Password");
     }
@@ -32,9 +32,7 @@ export default function Login() {
         onSubmit={handleLogin}
         className="bg-white w-full max-w-md p-6 rounded-xl shadow"
       >
-        <h1 className="text-2xl font-bold text-center mb-5">
-          Login
-        </h1>
+        <h1 className="text-2xl font-bold text-center mb-5">Login</h1>
 
         <input
           className="w-full border p-3 mb-3 rounded"
@@ -45,8 +43,8 @@ export default function Login() {
 
         <input
           className="w-full border p-3 mb-4 rounded"
-          placeholder="Password"
           type="password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

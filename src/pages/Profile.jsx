@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
 
 export default function Profile() {
   const user = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -18,8 +18,21 @@ export default function Profile() {
   };
 
   const saveProfile = () => {
-    localStorage.setItem("loggedInUser", JSON.stringify(formData));
-    localStorage.setItem("users", JSON.stringify([formData]));
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+    let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    // update users list
+    users = users.map((u) =>
+      u.id === loggedInUser.id ? { ...u, ...formData } : u,
+    );
+
+    localStorage.setItem("users", JSON.stringify(users));
+
+    // update current session
+    localStorage.setItem(
+      "loggedInUser",
+      JSON.stringify({ ...loggedInUser, ...formData }),
+    );
 
     alert("Profile Updated Successfully");
     setIsEditing(false);
@@ -34,40 +47,38 @@ export default function Profile() {
           <Sidebar />
         </div>
 
-        <div className="flex-1 p-4 md:p-6 flex justify-center">
-          <div className="bg-white w-full max-w-2xl rounded-xl shadow p-5 md:p-8">
+        <div className="flex-1 flex justify-center p-4">
+          <div className="bg-white w-full max-w-xl p-6 rounded-xl shadow">
             <h1 className="text-2xl font-bold text-center mb-6">My Profile</h1>
 
-            <div className="space-y-4">
-              <input
-                name="name"
-                value={formData.name}
-                disabled={!isEditing}
-                onChange={handleChange}
-                className="w-full border p-3 rounded bg-gray-50"
-              />
+            <input
+              name="name"
+              value={formData.name}
+              disabled={!isEditing}
+              onChange={handleChange}
+              className="w-full border p-3 mb-3 rounded"
+            />
 
-              <input
-                name="email"
-                value={formData.email}
-                disabled={!isEditing}
-                onChange={handleChange}
-                className="w-full border p-3 rounded bg-gray-50"
-              />
+            <input
+              name="email"
+              value={formData.email}
+              disabled={!isEditing}
+              onChange={handleChange}
+              className="w-full border p-3 mb-3 rounded"
+            />
 
-              <input
-                name="password"
-                type="password"
-                value={formData.password}
-                disabled={!isEditing}
-                onChange={handleChange}
-                className="w-full border p-3 rounded bg-gray-50"
-              />
-            </div>
+            <input
+              name="password"
+              type="password"
+              value={formData.password}
+              disabled={!isEditing}
+              onChange={handleChange}
+              className="w-full border p-3 mb-4 rounded"
+            />
 
             <button
               onClick={() => (isEditing ? saveProfile() : setIsEditing(true))}
-              className={`w-full mt-6 p-3 rounded text-white ${
+              className={`w-full p-3 text-white rounded ${
                 isEditing ? "bg-green-500" : "bg-blue-500"
               }`}
             >

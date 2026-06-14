@@ -10,16 +10,21 @@ export default function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const users =
+      JSON.parse(localStorage.getItem("users")) || [];
 
     const user = users.find(
       (u) =>
-        u.email.trim().toLowerCase() === email.trim().toLowerCase() &&
-        u.password === password,
+        u.email.trim().toLowerCase() ===
+          email.trim().toLowerCase() &&
+        u.password === password
     );
 
     if (user) {
-      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      localStorage.setItem(
+        "loggedInUser",
+        JSON.stringify(user)
+      );
 
       navigate("/dashboard");
     } else {
@@ -33,7 +38,9 @@ export default function Login() {
         onSubmit={handleLogin}
         className="bg-white p-6 rounded-xl shadow w-full max-w-md"
       >
-        <h1 className="text-2xl font-bold mb-5 text-center">Login</h1>
+        <h1 className="text-2xl font-bold mb-5 text-center">
+          Login
+        </h1>
 
         <input
           className="w-full border p-3 mb-3 rounded"
